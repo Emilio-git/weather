@@ -18,35 +18,139 @@ body {
 
 .main {
   padding-top: 50px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   font-size: 20px;
 }
 .main h1 {
   margin-bottom: 15px;
 }
 
-.city {
+.form__input {
+  display: block;
+  min-width: 300px;
   border-radius: 20px;
-  padding: 15px 10px;
+  padding: 15px 15px;
   font-size: 16px;
   margin-bottom: 10px;
-  border: 0.5px solid red;
+  border: 0.5px solid #000;
+}
+.form__submit {
+  height: 40px;
+  background: rgb(142, 226, 142);
+  border: none;
+  border-radius: 20px;
+  font-weight: 600;
+  transition: all 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 150px;
+  font-family: "Montserrat", sans-serif;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.form__submit:hover {
+  background: rgb(95, 184, 95);
 }
 
+.weather__container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.weather__item {
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.item {
+  position: relative;
+  box-shadow: 0px 0px 30px 4px rgba(34, 60, 80, 0.2);
+  top: 0;
+  transition: all 0.3s;
+  max-width: 300px;
+  padding: 25px;
+  border-radius: 20px;
+  background-color: #7aaed8;
+  color: #fff;
+}
 .item__title {
-  font-size: 18px;
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 .item__current-temp {
-  font-size: 25px;
+  font-size: 18px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #fff;
+}
+.item__current-temp span {
+  display: block;
+  text-align: center;
+  font-size: 80px;
+}
+.item__short-decr {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 3px;
 }
 .item__description {
   display: flex;
   flex-direction: column;
-  font-weight: 700;
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 .item__description span {
-  margin-bottom: 7px;
+  margin-bottom: 3px;
 }
 .item__description span:last-child {
   margin-bottom: 0;
+}
+.item__delete {
+  display: none;
+  position: absolute;
+  cursor: pointer;
+  transition: all 0.5s;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 15px;
+  height: 15px;
+  top: 10px;
+  right: 10px;
+  overflow: hidden;
+}
+.item__delete span {
+  position: relative;
+  top: 7.5px;
+  display: block;
+  width: 100%;
+  height: 1.5px;
+  background: #fff;
+  border-radius: 20px;
+  transform: rotate(45deg);
+}
+.item__delete span:last-child {
+  transform: rotate(-45deg);
+  top: 6px;
+}
+
+.activate {
+  top: -7px;
+}
+
+.active-cross {
+  display: block;
+}
+
+.failure {
+  display: inline-block;
+  position: relative;
+  padding: 10px 15px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+  left: 0;
+  background: rgb(230, 134, 134);
+  transition: all 0.1s;
 }
