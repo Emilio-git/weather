@@ -36,13 +36,18 @@ body {
    }
 
    &__input {
-      display: block;
       min-width: 300px;
+      position: relative;
       border-radius: 20px;
       padding: 15px 15px;
       font-size: 16px;
       margin-bottom: 10px;
       border: 0.5px solid #000;
+      outline: none;
+      transition: all 0.3s;
+      &:focus {
+         box-shadow: 0px 0px 30px 4px rgba(34, 60, 80, 0.2);
+      }
    }
 
    &__submit {
@@ -63,6 +68,9 @@ body {
          background: rgb(95, 184, 95);
 
       }
+   }
+   &__wrapper {
+      margin-bottom: 10px;
    }
 }
 
@@ -88,6 +96,8 @@ body {
    border-radius: 20px;
    background-color: #7aaed8;
    color: #fff;
+   display: flex;
+   flex-direction: column;   
    &__title {
       text-align: center;
       font-size: 16px;
@@ -95,14 +105,17 @@ body {
    }
 
    &__current-temp {
+      flex: 1 1 auto;
       font-size: 18px;
       margin-bottom: 10px;
       padding-bottom: 10px;
       border-bottom: 1px solid #fff;
       & span {
-         display: block;
          text-align: center;
-         font-size: 80px;
+         font-size: 70px;
+      }
+      & img {
+         flex: 1 1 50%;
       }
    }
 
@@ -125,8 +138,7 @@ body {
             margin-bottom: 0;
          }
       }
-
-   }
+   }   
 
    &__delete {
       display: none;
@@ -157,6 +169,11 @@ body {
    }
 }
 
+.current-temp__wrapper {
+   display: flex;
+   align-items: center;
+}
+
 .activate {
    top: -7px;
 }
@@ -175,4 +192,16 @@ body {
    left: 0;
    background: rgb(230, 134, 134);
    transition: all 0.1s;
+}
+
+.loading {
+   position: relative;
+   z-index: 3;
+   background-repeat: no-repeat;
+   background-position: center;
+   width: 15px;
+   height: 15px;
+   display: inline-block;
+   margin-left: -35px;
+   top: 2px;
 }
