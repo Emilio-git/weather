@@ -6,7 +6,7 @@ window.addEventListener('DOMContentLoaded', () => {
    const form = document.querySelector('.form__city');
    const btn = document.querySelector('.form__submit');
    const cityName = document.querySelector('.form__input');
-   
+
    const loading = document.createElement('img');
    loading.src = `./icons/loading.gif`;
    loading.classList.add('loading');
@@ -17,10 +17,17 @@ window.addEventListener('DOMContentLoaded', () => {
       exists: 'Данный прогноз уже найден'
    }; 
 
+   initializeItems(localStorage);
+
    btn.addEventListener('click', (e) => {
       e.preventDefault();
+      getFullResult(cityName.value);
+      
+   });
+
+   function getFullResult(name) {
       let lat, lon;
-      fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${cityName.value}&limit=1&appid=${key}`, {
+      fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${name}&limit=1&appid=${key}`, {
          method: "GET",
       }) 
          .then(response => {
@@ -53,14 +60,14 @@ window.addEventListener('DOMContentLoaded', () => {
             showError(failureMessage.badRequestName);
             loading.remove();
          });
-      
-   });
+   }
 
    function getResult(lat, lon, data) {
       fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${key}&units=metric&lang=ru`)
          .then(response => response.json())
          .then(json => {
             loading.remove();
+            writeToLocal(data.name);
             cityName.value = '';
 
             data.tempMax = json.main.temp_max;
@@ -79,6 +86,24 @@ window.addEventListener('DOMContentLoaded', () => {
          });
    }
 
+   let counterName = 0;
+   function writeToLocal(name) {
+      localStorage.setItem(name, counterName);
+      counterName++;
+   }
+
+   function deleteFromLocal(name) {
+      delete localStorage[name];
+   }
+
+   function initializeItems(storage) {
+      console.log(storage);
+      for (let i = 0; i < storage.length; i++) {
+         getFullResult(storage.key(i));
+      }
+   }
+
+   
    const parent = document.querySelector('.weather__container');
 
    function createCard(name, tempMax, tempMin, tempCurrent, humidity, shortDescr, iconName, iconDescr) {
@@ -101,7 +126,7 @@ window.addEventListener('DOMContentLoaded', () => {
       shortDescr = `${shortDescr}`.slice(0, 1).toUpperCase() + `${shortDescr}`.slice(1);
 
       elem.innerHTML = `
-         <h2 class="item__title">Погода в городе <br><span>${name}</span></h2>
+         <h2 class="item__title">Погода в городе <br><span id="city">${name}</span></h2>
          <div class="item__current-temp current-temp">Текущая температура: 
             <div class="current-temp__wrapper">
                <img src="http://openweathermap.org/img/wn/${iconName}@2x.png" alt="${iconDescr}">
@@ -154,6 +179,7 @@ window.addEventListener('DOMContentLoaded', () => {
          counter += 1;
          if(counter === 7) {
             clearInterval(errorAnimation);
+            failure.style.left = `0px`;
          }
       }, 40);
    }
@@ -161,23 +187,41 @@ window.addEventListener('DOMContentLoaded', () => {
    function hoverItem(elem) {
       elem.addEventListener('mouseover', (e) => {
          activateItem(elem);
-         elem.lastElementChild.addEventListener('click', () => {
-            elem.remove();
-         });
+
       });
 
       elem.addEventListener('mouseout', (e) => {
          deactivateItem(elem);
+      });
+
+      elem.lastElementChild.addEventListener('click', () => {
+         deleteFromLocal(elem.querySelector('#city').innerText);
+         elem.remove();
       });
    }
 
    function activateItem(elem) {
       elem.classList.add('activate');
       elem.lastElementChild.classList.add('active-cross');
+      elem.style.boxShadow = `0px 5px 20px 6px rgba(34, 60, 80, 0.3)`;
    }
 
-   function deactivateItem(elem, cross) {
+   function deactivateItem(elem) {
       elem.classList.remove('activate');
       elem.lastElementChild.classList.remove('active-cross');
+      elem.style.boxShadow = `0px 0px 30px 4px rgba(34, 60, 80, 0.2)`;
    }
+
+   const infoDeleteIcon = document.querySelector('.form__info-delete');
+
+   infoDeleteIcon.parentNode.addEventListener('mouseover', () => {
+      infoDeleteIcon.style.opacity = 1;
+   });
+   infoDeleteIcon.parentNode.addEventListener('mouseout', () => {
+      infoDeleteIcon.style.opacity = 0;
+   });
+
+   infoDeleteIcon.addEventListener('click', () => {
+      infoDeleteIcon.parentNode.remove();
+   });
 });
